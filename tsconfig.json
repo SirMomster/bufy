@@ -1,0 +1,30 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "commonjs",
+    "declaration": true,
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "strict": true,
+    "sourceMap": false,
+    "experimentalDecorators": true,
+    "typeRoots": [
+      "node_modules/@types",
+      "typings/"
+    ],
+    "lib": [
+      "dom",
+      "es6",
+      "scripthost",
+      "es2015.iterable"
+    ]
+  },
+  "exclude": [
+    "node_modules/**",
+    "**/*.spec.ts"
+  ],
+  "include": [
+    "src",
+    "typings"
+  ]
+}
