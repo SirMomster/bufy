@@ -1,13 +1,12 @@
 {
   "name": "bufy",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Library that maps buffers to objects and back",
   "main": "dist/index.js",
   "scripts": {
     "test": "mocha -r ts-node/register __test__/**/*.test.ts",
     "build": "tsc",
-    "tsc:w": "tsc -w --pretty true",
-    "dev:watch": "tsc:w"
+    "tsc:w": "tsc -w --pretty true"
   },
   "devDependencies": {
     "@types/chai": "^4.1.7",
@@ -17,7 +16,8 @@
     "ts-node": "^8.3.0",
     "typescript": "^3.5.2"
   },
-  "author": "Mitch Mommers",
+  "author": "SirMomster",
   "license": "MIT",
+  "repository": "https://github.com/SirMomster/bufy",
   "dependencies": {}
 }

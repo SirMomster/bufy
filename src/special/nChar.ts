@@ -1,6 +1,6 @@
 import { AbstractType } from "../types";
 
-export class NVarChar implements AbstractType {
+export class NChar implements AbstractType {
     private _length: number;
     private _trim: boolean;
 
@@ -11,7 +11,6 @@ export class NVarChar implements AbstractType {
 
     static fitStringToLength(string: string, length: number) {
         const difference = length - string.length;
-        console.log(difference);
         if (difference < 0) {
             return string.substr(0, length);
         } else if (difference > 0) {
@@ -23,7 +22,7 @@ export class NVarChar implements AbstractType {
     }
 
     forBuffer(view: DataView, currentIndex: number, value: string): void {
-        value = NVarChar.fitStringToLength(value, this._length);
+        value = NChar.fitStringToLength(value, this._length);
 
         for (let i = 0; i < this._length; i++) {
             view.setUint8(currentIndex + i, value.charCodeAt(i));

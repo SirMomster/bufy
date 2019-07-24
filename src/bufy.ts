@@ -2,7 +2,8 @@ import { Types, AbstractType } from './types';
 import { ObjectMapping, BufferMapping } from './models';
 import { FixedRecursive } from './recursive/fixedRecursive';
 import { Recursive } from './recursive/recursive';
-import { NVarChar } from './special/nVarChar';
+import { NChar } from './special/nChar';
+import { Nested } from './special/nested';
 
 export class Bufy<O> {
     private _mapping: BufferMapping;
@@ -66,15 +67,20 @@ export class Bufy<O> {
         return Types;
     }
 
-    static fixedRecursive (amountIdentifier: string, mapping: BufferMapping) {
-        return new FixedRecursive(amountIdentifier, mapping);
+    static fixedRecursive (id: string, type: AbstractType) {
+        const amountId = `amount_${id}`;
+        return { [amountId]: Bufy.type().uInt8Type, [id]: new FixedRecursive(amountId, type) };
     }
 
-    static recursive(mapping: BufferMapping) {
-        return new Recursive(mapping);
+    static recursive(type: AbstractType) {
+        return new Recursive(type);
     }
 
-    static nVarChar(maxLength: number, trim: boolean = true) {
-        return new NVarChar(maxLength, trim);
+    static nChar(maxLength: number, trim: boolean = true) {
+        return new NChar(maxLength, trim);
+    }
+
+    static nested (mapping: BufferMapping) {
+        return new Nested(mapping);
     }
 }

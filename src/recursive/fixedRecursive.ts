@@ -1,42 +1,27 @@
 import { AbstractType } from '../types/abstractType';
-import { BufferMapping, ObjectMapping } from '../models';
-
-export interface FixedRecursiveMapping {
-    amount: number,
-    mapping: BufferMapping,
-}
+import { Bufy } from '../bufy';
 
 export class FixedRecursive implements AbstractType {
     private _amountIdentifier: string;
-    private _bufferMapping: BufferMapping;
+    private _type: AbstractType;
+    private _identifierType: AbstractType;
 
-    private _keys: Array<string>;
-
-    public constructor (amountIdentifier: string, mapping: BufferMapping) {
+    public constructor (amountIdentifier: string, type: AbstractType, identifierType: AbstractType = Bufy.type().uInt8Type) {
         this._amountIdentifier = amountIdentifier;
-        this._bufferMapping = mapping;
-        this._keys = Object.keys(mapping);
+        this._type = type;
+        this._identifierType = identifierType;
     }
 
-    public calculateBufferLengthForMapping (amount: number) {
-        let length: number = 0;
-
-        this._keys.forEach(v => {
-            const abstractType = this._bufferMapping[v] as AbstractType;
-            length += abstractType.indexIncremental();
-        });
-
-        return length * amount;
+    public calculateBufferLengthForMapping (amount: number = 1) {
+        return (this._type.indexIncremental() * amount) + this._identifierType.indexIncremental();
     }
 
     forBuffer(view: DataView, currentIndex: number, value: any[], object?: any): void {
         let index = currentIndex;
+        this._identifierType.forBuffer(view, index - this._identifierType.indexIncremental(), value.length);
         value.forEach((a: any) => {
-            this._keys.forEach(v => {
-                const abstractType = this._bufferMapping[v] as AbstractType;
-                abstractType.forBuffer(view, index, (a as any)[v], a);
-                index += abstractType.indexIncremental();
-            });
+            this._type.forBuffer(view, index, a, object);
+            index += this._type.indexIncremental();
         });
     }
 
@@ -44,15 +29,9 @@ export class FixedRecursive implements AbstractType {
         const amount = resolved[this._amountIdentifier];
         let index = currentIndex;
         const results =[];
-
         for (let i = 0; i < amount; i++) {
-            const result: ObjectMapping = {}
-            this._keys.forEach(v => {
-                const abstractType = this._bufferMapping[v] as AbstractType;
-                result[v] = abstractType.forObject(view, index, result);
-                index += abstractType.indexIncremental();
-            });
-            results.push(result);
+            results.push(this._type.forObject(view, index, resolved));
+            index += this._type.indexIncremental();
         }
 
         return results;
