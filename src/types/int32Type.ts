@@ -1,16 +1,18 @@
-import { AbstractType } from './abstractType';
+import { AbstractType } from "./abstractType";
+
+const BYTE_SIZE = 4;
 
 export class Int32Type extends AbstractType {
-    forBuffer(view: DataView, currentIndex: number, value: number): void {
+    public forBuffer(view: DataView, currentIndex: number, value: number): void {
         return view.setInt32(currentIndex, value);
     }
 
-    forObject(view: DataView, currentIndex: number): number {
+    public forObject(view: DataView, currentIndex: number): number {
         return view.getInt32(currentIndex);
     }
 
-    indexIncremental(): number {
-        return 4;
+    public indexIncremental(): number {
+        return BYTE_SIZE;
     }
 }
 

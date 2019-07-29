@@ -1,16 +1,18 @@
-import { AbstractType } from './abstractType';
+import { AbstractType } from "./abstractType";
+
+const BYTE_SIZE = 8;
 
 export class Float64Type extends AbstractType {
-    forBuffer(view: DataView, currentIndex: number, value: number): void {
+    public forBuffer(view: DataView, currentIndex: number, value: number): void {
         return view.setFloat64(currentIndex, value);
     }
 
-    forObject(view: DataView, currentIndex: number): number {
+    public forObject(view: DataView, currentIndex: number): number {
         return view.getFloat64(currentIndex);
     }
 
-    indexIncremental(): number {
-        return 8;
+    public indexIncremental(): number {
+        return BYTE_SIZE;
     }
 }
 

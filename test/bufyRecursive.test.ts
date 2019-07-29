@@ -1,34 +1,23 @@
-import { expect } from 'chai';
-import 'mocha';
+// tslint:disable: no-magic-numbers
 
-import { Bufy } from '../src/index';
+import { expect } from "chai";
+import "mocha";
 
-interface RecursiveNumberMapping {
-    child: number[],
-}
+import { Bufy } from "../src/index";
 
-const RecursiveNumberModelDescription = {
-    child: Bufy.recursive(Bufy.type().uInt8Type),
-}
+describe("bufyMappingTests#Recursive", () => {
+    it("should map a recursive number array", () => {
+        interface IRecursiveNumberMapping {
+            child: number[];
+        }
 
-const NumberArrayTestModel = new Bufy<RecursiveNumberMapping>(RecursiveNumberModelDescription);
+        const RecursiveNumberModelDescription = {
+            child: Bufy.recursive(Bufy.type().int16Type),
+        };
 
-interface RecursiveObjectMapping {
-    child: { id: number }[],
-}
+        const NumberArrayTestModel = new Bufy<IRecursiveNumberMapping>(RecursiveNumberModelDescription);
 
-const RecursiveObjectModelDescription = {
-    child: Bufy.recursive(Bufy.nested({
-        id: Bufy.type().uInt8Type,
-    })),
-}
-
-const ObjectArrayTestModel = new Bufy<RecursiveObjectMapping>(RecursiveObjectModelDescription);
-
-
-describe('bufyMappingTests#Recursive', () => {
-    it('should map a recursive number array', () => {
-        const testObject: RecursiveNumberMapping = {
+        const testObject: IRecursiveNumberMapping = {
             child: [1],
         };
 
@@ -38,8 +27,20 @@ describe('bufyMappingTests#Recursive', () => {
         expect(object.child[0]).to.eql(testObject.child[0]);
     });
 
-    it('should map a recursive object array', () => {
-        const testObject: RecursiveObjectMapping = {
+    it("should map a recursive object array", () => {
+        interface IRecursiveObjectMapping {
+            child: Array<{ id: number }>;
+        }
+
+        const RecursiveObjectModelDescription = {
+            child: Bufy.recursive(Bufy.nested({
+                id: Bufy.type().int32Type,
+            })),
+        };
+
+        const ObjectArrayTestModel = new Bufy<IRecursiveObjectMapping>(RecursiveObjectModelDescription);
+
+        const testObject: IRecursiveObjectMapping = {
             child: [{
                 id: 1,
             }],

@@ -1,47 +1,52 @@
 import { AbstractType } from "../types";
 
 export class NChar implements AbstractType {
-    private _length: number;
-    private _trim: boolean;
 
-    public constructor (length: number, trim: boolean) {
-        this._length = length;
-        this._trim = trim;
+    private length: number;
+    private trim: boolean;
+
+    public constructor(length: number, trim: boolean) {
+        this.length = length;
+        this.trim = trim;
     }
 
-    static fitStringToLength(string: string, length: number) {
-        const difference = length - string.length;
+    public static fitStringToLength(value: string, length: number): string {
+        const difference = length - value.length;
+        let newValue = value;
+
         if (difference < 0) {
-            return string.substr(0, length);
+            newValue = value.substr(0, length);
         } else if (difference > 0) {
-            for (let i = 0; i < difference; i++)
-                string += ' ';
+            for (let i = 0; i < difference; i++) {
+                newValue += " ";
+            }
         }
 
-        return string;
+        return newValue;
     }
 
-    forBuffer(view: DataView, currentIndex: number, value: string): void {
-        value = NChar.fitStringToLength(value, this._length);
+    public forBuffer(view: DataView, currentIndex: number, value: string): void {
+        const newValue: string = NChar.fitStringToLength(value, this.length);
 
-        for (let i = 0; i < this._length; i++) {
-            view.setUint8(currentIndex + i, value.charCodeAt(i));
+        for (let i = 0; i < this.length; i++) {
+            view.setUint8(currentIndex + i, newValue.charCodeAt(i));
         }
-    }    
+    }
 
-    forObject(view: DataView, currentIndex: number): string {
-        const result: string[] = new Array(this._length);
-        for (let i = 0; i < this._length; i++) {
+    public forObject(view: DataView, currentIndex: number): string {
+        const result: string[] = new Array(this.length);
+        for (let i = 0; i < this.length; i++) {
             result.push(String.fromCharCode(view.getUint8(currentIndex + i)));
         }
 
-        if (this._trim)
-            return result.join('').trim();
+        if (this.trim) {
+            return result.join("").trim();
+        }
 
-        return result.join('');
+        return result.join("");
     }
-    
-    indexIncremental(): number {
-        return this._length;
+
+    public indexIncremental(): number {
+        return this.length;
     }
 }

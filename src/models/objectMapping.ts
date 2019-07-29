@@ -1,3 +1,3 @@
-export interface ObjectMapping {
+export interface IObjectMapping {
     [key: string]: number | string | object;
 }

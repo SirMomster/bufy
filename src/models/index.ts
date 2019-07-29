@@ -1,2 +1,2 @@
-export * from './bufferMapping';
-export * from './objectMapping';
+export * from "./bufferMapping";
+export * from "./objectMapping";

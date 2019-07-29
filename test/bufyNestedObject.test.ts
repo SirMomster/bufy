@@ -1,28 +1,30 @@
-import { expect } from 'chai';
-import 'mocha';
+// tslint:disable: no-magic-numbers
 
-import { Bufy } from '../src/index';
+import { expect } from "chai";
+import "mocha";
 
-interface NestedObjectMapping {
+import { Bufy } from "../src/index";
+
+interface INestedObjectMapping {
     child: {
-        id: number
-    },
+        id: number,
+    };
 }
 
 const TestModelDescription = {
     child: Bufy.nested({
-        id: Bufy.type().int8Type,
+        id: Bufy.type().uInt16Type,
     }),
-}
+};
 
-const TestModel = new Bufy<NestedObjectMapping>(TestModelDescription);
+const TestModel = new Bufy<INestedObjectMapping>(TestModelDescription);
 
-describe('bufyMappingTests#NetstedObject', () => {
-    it('should map a nested object', () => {
-        const testObject: NestedObjectMapping = {
+describe("bufyMappingTests#NetstedObject", () => {
+    it("should map a nested object", () => {
+        const testObject: INestedObjectMapping = {
             child: {
                 id: 1,
-            }
+            },
         };
 
         const buffer = TestModel.toBuffer(testObject);

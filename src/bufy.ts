@@ -1,86 +1,90 @@
-import { Types, AbstractType } from './types';
-import { ObjectMapping, BufferMapping } from './models';
-import { FixedRecursive } from './recursive/fixedRecursive';
-import { Recursive } from './recursive/recursive';
-import { NChar } from './special/nChar';
-import { Nested } from './special/nested';
+import { IBufferMapping, IObjectMapping } from "./models";
+import { List } from "./recursive/list";
+import { Recursive } from "./recursive/recursive";
+import { NChar } from "./special/nChar";
+import { Nested } from "./special/nested";
+import { AbstractType, ITypes, Types } from "./types";
+
+const DEFAULT_AMOUNT = 1;
 
 export class Bufy<O> {
-    private _mapping: BufferMapping;
-    private _keys: Array<string>;
 
-    public constructor(mapping: BufferMapping) {
-        this._mapping = mapping;
-        this._keys = Object.keys(mapping);
+    private mapping: IBufferMapping;
+    private keys: string[];
+
+    public constructor(mapping: IBufferMapping) {
+        this.mapping = mapping;
+        this.keys = Object.keys(mapping);
     }
 
-    public calculateBufferLengthForMapping (object: any) {
+    public static type(): ITypes {
+        return Types;
+    }
+
+    public static list(id: string, type: AbstractType, identifierType: AbstractType = Bufy.type().uInt8Type):
+        { [Key: string]: AbstractType | List } {
+        const amountId = `amount_${id}`;
+        return { [amountId]: identifierType, [id]: new List(amountId, type, identifierType) };
+    }
+
+    public static recursive(type: AbstractType): Recursive {
+        return new Recursive(type);
+    }
+
+    public static nChar(maxLength: number, trim: boolean = true): NChar {
+        return new NChar(maxLength, trim);
+    }
+
+    public static nested(mapping: IBufferMapping): Nested {
+        return new Nested(mapping);
+    }
+
+    public calculateBufferLengthForMapping(object: any): number {
         let length: number = 0;
 
-        this._keys.forEach(v => {
+        this.keys.forEach((v) => {
             const value = object && object[v];
-            const abstractType = this._mapping[v] as AbstractType;
-            length += abstractType.indexIncremental(Array.isArray(value) && value.length || 1);
+            const abstractType = this.mapping[v] as AbstractType;
+            length += abstractType.indexIncremental(Array.isArray(value) && value.length || DEFAULT_AMOUNT, value);
         });
 
         return length;
     }
 
-    private createView (object: any) {
-        const bufferLength = this.calculateBufferLengthForMapping(object);
-        const buffer = new ArrayBuffer(bufferLength);
-        
-        return new DataView(buffer);
-    }
-
     public toObject(buffer: ArrayBuffer): O {
-        let index = 0
+        let index = 0;
 
-        const result: ObjectMapping = {}
+        const result: IObjectMapping = {};
         const view = new DataView(buffer);
 
-        this._keys.forEach(v => {
-            const abstractType = this._mapping[v] as AbstractType;
+        this.keys.forEach((v) => {
+            const abstractType = this.mapping[v] as AbstractType;
             const value = abstractType.forObject(view, index, result);
             result[v] = value;
-            index += abstractType.indexIncremental(Array.isArray(value) && value.length || 1);
+            index += abstractType.indexIncremental(Array.isArray(value) && value.length || DEFAULT_AMOUNT);
         });
 
         return result as unknown as O;
     }
 
     public toBuffer(object: any): ArrayBuffer {
-        let index = 0
+        let index = 0;
         const dataView = this.createView(object);
 
-        this._keys.map(v => {
+        this.keys.map((v) => {
             const value = object && object[v];
-            const abstractType = this._mapping[v] as AbstractType;
+            const abstractType = this.mapping[v] as AbstractType;
             abstractType.forBuffer(dataView, index, value, object);
-            index += abstractType.indexIncremental(Array.isArray(value) && value.length || 1);
+            index += abstractType.indexIncremental(Array.isArray(value) && value.length || DEFAULT_AMOUNT);
         });
 
         return dataView.buffer;
     }
 
-    static type () {
-        return Types;
-    }
+    private createView(object: any): DataView {
+        const bufferLength = this.calculateBufferLengthForMapping(object);
+        const buffer = new ArrayBuffer(bufferLength);
 
-    static fixedRecursive (id: string, type: AbstractType) {
-        const amountId = `amount_${id}`;
-        return { [amountId]: Bufy.type().uInt8Type, [id]: new FixedRecursive(amountId, type) };
-    }
-
-    static recursive(type: AbstractType) {
-        return new Recursive(type);
-    }
-
-    static nChar(maxLength: number, trim: boolean = true) {
-        return new NChar(maxLength, trim);
-    }
-
-    static nested (mapping: BufferMapping) {
-        return new Nested(mapping);
+        return new DataView(buffer);
     }
 }

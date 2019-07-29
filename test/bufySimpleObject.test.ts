@@ -1,28 +1,30 @@
-import { expect } from 'chai';
-import 'mocha';
+// tslint:disable: no-magic-numbers
 
-import { Bufy } from '../src/index';
+import { expect } from "chai";
+import "mocha";
 
-interface BasePacketObjectMapping {
-    id: number,
+import { Bufy } from "../src/index";
+
+interface IBasePacketObjectMapping {
+    id: number;
 }
 
-interface TestPacketObjectMapping extends BasePacketObjectMapping {
-    x: number,
-    y: number,
+interface ITestPacketObjectMapping extends IBasePacketObjectMapping {
+    x: number;
+    y: number;
 }
 
 const TestModelDescription = {
     id: Bufy.type().int8Type,
     x: Bufy.type().int8Type,
     y: Bufy.type().int16Type,
-}
+};
 
-const TestModel = new Bufy<TestPacketObjectMapping>(TestModelDescription);
+const TestModel = new Bufy<ITestPacketObjectMapping>(TestModelDescription);
 
-describe('bufyMappingTests#SimpleObject', () => {
-    it('should map a simple object', () => {
-        const testObject: TestPacketObjectMapping = {
+describe("bufyMappingTests#SimpleObject", () => {
+    it("should map a simple object", () => {
+        const testObject: ITestPacketObjectMapping = {
             id: 123,
             x: 1,
             y: 2,
@@ -30,7 +32,7 @@ describe('bufyMappingTests#SimpleObject', () => {
 
         const buffer = TestModel.toBuffer(testObject);
         const object = TestModel.toObject(buffer);
-        
+
         expect(object.id).to.eql(testObject.id);
         expect(object.x).to.eql(testObject.x);
         expect(object.y).to.eql(testObject.y);
