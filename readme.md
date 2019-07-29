@@ -1,4 +1,10 @@
 # Bufy
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/9dcc2a61a75c44b488f2c3278e6bc36f)](https://www.codacy.com?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=SirMomster/bufy&amp;utm_campaign=Badge_Grade)
+[![Codacy Badge](https://api.codacy.com/project/badge/Coverage/9dcc2a61a75c44b488f2c3278e6bc36f)](https://www.codacy.com?utm_source=github.com&utm_medium=referral&utm_content=SirMomster/bufy&utm_campaign=Badge_Coverage)
+[![npm version](https://badge.fury.io/js/bufy.svg)](https://badge.fury.io/js/bufy)
+![dependencies](https://david-dm.org/sirmomster/bufy.svg)
+[![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/sirmomster/bufy/issues)
+[![Known Vulnerabilities](https://snyk.io//test/github/SirMomster/bufy/badge.svg?targetFile=package.json)](https://snyk.io//test/github/SirMomster/bufy?targetFile=package.json)
 
 ## What is bufy
 
