@@ -7,7 +7,7 @@ Bufy is a library that allows you to map ArrayBuffers on Objects and back. For e
 ```js
 const locationModelDescription = {
     id: Bufy.type().int8Type,
-    x: Bufy.type().int16Type,
+    x: Bufy.type().uInt16Type,
     y: Bufy.type().int16Type,
 }
 
@@ -26,20 +26,20 @@ const object = LocationModel.toObject(buffer); // { id: 123, x: 1, y: 2 }
 We use this library internally to send packets over MqTT and WebSockets. It's a lot easier that doing the mapping by yourself and
 it allows you to use tiny packets while keeping a JSON structure.
 
-The model is also reusable, which makes it easy to build a shared model module for your projects and it supports both node and web.
+The model is also reusable, which makes it easy to build a shared model module for your projects. It supports both node and web with zero dependencies.
 
 ## Supported types
 
 All the JS supported types are supported:
 (u)Int8, (u)Int16, (u)Int32, float32, float64
 
-We also added additional support for Lists, nested objects, recursion and nChars (strings).
+We also added additional support for lists, nested objects, recursion and nChars (strings).
 
 ### NChars
 
 This will map a string to a char array which then can be mapped to a buffer and back.
 
-Padding is added to the end of the string if its smaller than the maxLength (10 in this case). If, it's bigger than the string it will be truncated. By default, the string will be trimmed when it's mapped on an object.
+Padding is added to the end of the string if its smaller than the maxLength (10 in this case). If it's bigger, than the string it will be truncated. By default, the string will be trimmed when it's mapped on an object.
 
 ```js
 const userModelMapping = {
@@ -51,9 +51,12 @@ const user = {
 }
 ```
 
-### Recursive and FixedRecursive
+### Recursive, List and Nested
 
-Recursive and fixedRecursive do almost the same, but the diffrence is that recursive will try to map until it's at the end of the buffer/object, whereas fixedRecursive uses a fixed amount which is set in the object itself (by bufy) that tells it about the amount of object there are to map.
+Recursive and list do almost the same, but the difference is that recursive will try to map until it's at the end of the buffer/object, whereas list uses a fixed amount which is set in the object itself (by bufy) that tells it about the amount of items there are to be mapped.
+
+Nested allows you to have objects in your objects/lists.
+There is still one big limitation of lists and that would be multi-dimensional lists which aren't supported yet.
 
 ```js
 const entityLocationModel = {
@@ -61,7 +64,7 @@ const entityLocationModel = {
     ...Bufy.list("users", Bufy.nested({
         id: Bufy.type().int8Type,
         x: Bufy.type().int64Type,
-        y: Bufy.type().int64Type,
+        y: Bufy.type().float32Type,
     }),
     ...Bufy.list("random_ids", Bufy.type().uInt8Type),
 }
@@ -110,13 +113,16 @@ const buffer = LocationModel.toBuffer(locationObject); // [ArrayBuffer ...]
 const object = LocationModel.toObject(buffer); // { id: 123, x: 1, y: 2 }
 ```
 
+-----
+
+For more info make sure to check the tests.
 
 ## Roadmap
 
-1. Add more tests
-2. Add deep object mapping (nested objects)
-3. Performance enhancements
-4. Improvements in ease of use
+1. Performance enhancements
+2. Add support for multi-dimensional lists
+3. Add tests for Web
+4. Add a pre-compiled javascript bundle for Web
 
 ## Contributing
 
