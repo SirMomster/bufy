@@ -4,20 +4,37 @@
   "description": "Library that maps buffers to objects and back",
   "main": "dist/index.js",
   "scripts": {
-    "test": "mocha -r ts-node/register __test__/**/*.test.ts",
+    "coverage": "nyc mocha && cat ./coverage/lcov.info | codacy-coverage && rm -rf ./coverage",
+    "test": "mocha",
     "build": "tsc",
     "tsc:w": "tsc -w --pretty true"
   },
   "devDependencies": {
+    "@istanbuljs/nyc-config-typescript": "^0.1.3",
     "@types/chai": "^4.1.7",
     "@types/mocha": "^5.2.7",
     "chai": "^4.2.0",
+    "codacy-coverage": "^3.4.0",
     "mocha": "^6.1.4",
+    "nyc": "^14.1.1",
+    "source-map-support": "^0.5.12",
     "ts-node": "^8.3.0",
-    "typescript": "^3.5.2"
+    "typescript": "^3.5.3"
   },
   "author": "SirMomster",
   "license": "MIT",
   "repository": "https://github.com/SirMomster/bufy",
-  "dependencies": {}
+  "dependencies": {},
+  "nyc": {
+    "extends": "@istanbuljs/nyc-config-typescript",
+    "all": true,
+    "include": [
+      "src/*.ts",
+      "src/**/*.ts"
+    ],
+    "reporter": [
+      "text",
+      "lcov"
+    ]
+  }
 }
