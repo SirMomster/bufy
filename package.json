@@ -1,6 +1,6 @@
 {
   "name": "bufy",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "Library that maps buffers to objects and back",
   "main": "dist/index.js",
   "scripts": {
