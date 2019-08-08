@@ -1,3 +1,3 @@
 export interface IObjectMapping {
-    [key: string]: number | string | object;
+    [key: string]: number | string | object | boolean;
 }

@@ -1,6 +1,7 @@
 import { IBufferMapping, IObjectMapping } from "./models";
 import { List } from "./recursive/list";
 import { Recursive } from "./recursive/recursive";
+import { bool, Bool } from "./special/boolean";
 import { NChar } from "./special/nChar";
 import { Nested } from "./special/nested";
 import { AbstractType, ITypes, Types } from "./types";
@@ -37,6 +38,10 @@ export class Bufy<O> {
 
     public static nested(mapping: IBufferMapping): Nested {
         return new Nested(mapping);
+    }
+
+    public static bool(): Bool {
+        return bool;
     }
 
     public calculateBufferLengthForMapping(object: any): number {

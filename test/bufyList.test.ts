@@ -27,6 +27,27 @@ describe("bufyMappingTests#List", () => {
         expect(object.child[0]).to.eql(testObject.child[0]);
     });
 
+    it("should map a recursive boolean array", () => {
+        interface IRecursiveNumberMapping {
+            child: boolean[];
+        }
+
+        const RecursiveNumberModelDescription = {
+            ...Bufy.list("child", Bufy.bool()),
+        };
+
+        const NumberArrayTestModel = new Bufy<IRecursiveNumberMapping>(RecursiveNumberModelDescription);
+
+        const testObject: IRecursiveNumberMapping = {
+            child: [true, false, true, false, false],
+        };
+
+        const buffer = NumberArrayTestModel.toBuffer(testObject);
+        const object = NumberArrayTestModel.toObject(buffer);
+
+        expect(object.child).to.eql(testObject.child);
+    });
+
     it("should map a recursive number array with a custom identifier", () => {
         interface IRecursiveNumberMapping {
             child: number[];

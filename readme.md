@@ -15,12 +15,14 @@ const locationModelDescription = {
     id: Bufy.type().int8Type,
     x: Bufy.type().uInt16Type,
     y: Bufy.type().int16Type,
+    active: Bufy.bool(),
 }
 
 const locationObject = {
     id: 123,
     x: 1,
     y: 2,
+    active: true,
 }
 
 const LocationModel = new Bufy(locationModelDescription);
@@ -39,7 +41,7 @@ The model is also reusable, which makes it easy to build a shared model module f
 All the JS supported types are supported:
 (u)Int8, (u)Int16, (u)Int32, float32, float64
 
-We also added additional support for lists, nested objects, recursion and nChars (strings).
+We also added additional support for booleans (uInt8), lists, nested objects, recursion and nChars (strings).
 
 ### NChars
 
@@ -129,6 +131,7 @@ For more info make sure to check the tests.
 2. Add support for multi-dimensional lists
 3. Add tests for Web
 4. Add a pre-compiled javascript bundle for Web
+5. Add better docs
 
 ## Contributing
 
