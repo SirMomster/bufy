@@ -9,6 +9,15 @@ import { int8Type, Int8Type } from "./int8Type";
 import { float32Type, Float32Type } from "./float32Type";
 import { float64Type, Float64Type } from "./float64Type";
 
+export * from "./uInt16Type";
+export * from "./uInt32Type";
+export * from "./uInt8Type";
+export * from "./int16Type";
+export * from "./int32Type";
+export * from "./int8Type";
+export * from "./float32Type";
+export * from "./float64Type";
+
 export interface ITypes {
     uInt16Type: UInt16Type;
     uInt32Type: UInt32Type;

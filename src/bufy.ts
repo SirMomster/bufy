@@ -60,7 +60,7 @@ export class Bufy<O> {
         let index = 0;
 
         const result: IObjectMapping = {};
-        const view = new DataView(buffer);
+        const view = new DataView((buffer as any).buffer || buffer);
 
         this.keys.forEach((v) => {
             const abstractType = this.mapping[v] as AbstractType;
