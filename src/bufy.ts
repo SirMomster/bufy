@@ -60,7 +60,14 @@ export class Bufy<O> {
         let index = 0;
 
         const result: IObjectMapping = {};
-        const view = new DataView((buffer as any).buffer || buffer);
+
+        let checkedBuffer = buffer;
+        if ((checkedBuffer as any).buffer) {
+            let actualBuffer = (checkedBuffer as any);
+            checkedBuffer = actualBuffer.buffer.slice(actualBuffer.byteOffset, actualBuffer.byteOffset + actualBuffer.byteLength);
+        }
+
+        const view = new DataView(checkedBuffer);
 
         this.keys.forEach((v) => {
             const abstractType = this.mapping[v] as AbstractType;
