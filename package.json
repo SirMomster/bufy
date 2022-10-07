@@ -18,8 +18,8 @@
     "@types/mocha": "^5.2.7",
     "chai": "^4.2.0",
     "codacy-coverage": "^3.4.0",
-    "mocha": "^6.1.4",
-    "nyc": "^14.1.1",
+    "mocha": "^6.2.3",
+    "nyc": "^15.0.0",
     "source-map-support": "^0.5.12",
     "ts-node": "^8.3.0",
     "tslint": "^5.18.0",
@@ -29,7 +29,7 @@
   "license": "MIT",
   "repository": "https://github.com/SirMomster/bufy",
   "dependencies": {
-    "snyk": "^1.316.1"
+    "snyk": "^1.996.0"
   },
   "nyc": {
     "extends": "@istanbuljs/nyc-config-typescript",
