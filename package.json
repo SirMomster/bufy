@@ -29,7 +29,7 @@
   "license": "MIT",
   "repository": "https://github.com/SirMomster/bufy",
   "dependencies": {
-    "snyk": "^1.316.1"
+    "snyk": "^1.1064.0"
   },
   "nyc": {
     "extends": "@istanbuljs/nyc-config-typescript",
